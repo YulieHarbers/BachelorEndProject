@@ -264,17 +264,30 @@ predict dfit, dfits
 
 // robust is necessary
 mixed engagement_score teacher_credibility|| video_num:, vce(robust)
+predict resid, residuals
+swilk resid
 mixed engagement_score teacher_competence teacher_trustworthiness teacher_goodwill || video_num:, vce(robust)
+drop resid
+predict resid, residuals
+swilk resid
 mixed engagement_score teacher_credibility extraq1_ extraq2_|| video_num:, vce(robust)
+drop resid
+predict resid, residuals
+swilk resid
 mixed engagement_score teacher_competence teacher_trustworthiness teacher_goodwill extraq1_ extraq2_|| video_num:, vce(robust)
+drop resid
+predict resid, residuals
+swilk resid
 
 
 
-// additional exploratory analyses
+// additional exploratory analyses, but not used in report
 // creating interaction variables
 gen teacherxq1 = teacher_credibility*extraq1_
 gen teacherxq2 = teacher_credibility*extraq2_
 
+mixed engagement_score teacher_credibility extraq1_ extraq2_ teacherxq1|| video_num:, vce(robust)
+mixed engagement_score teacher_credibility extraq1_ extraq2_ teacherxq2|| video_num:, vce(robust)
 
 // testing splitting data
 bys video_num: egen m_teacher_credibility = mean(teacher_credibility)
